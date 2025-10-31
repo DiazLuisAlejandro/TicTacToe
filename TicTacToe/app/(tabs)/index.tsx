@@ -1,14 +1,15 @@
 import React from "react";
 
 import { useState } from 'react';
+import { TouchableOpacity, View } from "react-native";
 
 
 
 function Square({ value, onSquareClick }) {
   return (
-    <button style={{width:50,height:50}} className="square" onClick={onSquareClick}>
+    <TouchableOpacity style={{width:50,height:50, backgroundColor: "cyan", borderColor:"black"}} className="square" onPress={onSquareClick}>
       {value}
-    </button>
+    </TouchableOpacity>
   );
 }
 
@@ -33,10 +34,11 @@ function Board({ xIsNext, squares, onPlay }) {
   } else {
     status = 'Next player: ' + (xIsNext ? 'X' : 'O');
   }
+  
 
   return (
     <>
-      <div className="status">{status}</div>
+      <div className="status" >{status}</div>
       <div className="board-row">
         
         <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
@@ -61,6 +63,8 @@ function Board({ xIsNext, squares, onPlay }) {
     </>
   );
 }
+
+
 
 export default function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
