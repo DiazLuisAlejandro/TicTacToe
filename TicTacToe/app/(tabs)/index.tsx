@@ -1,14 +1,14 @@
 import React from "react";
 
 import { useState } from 'react';
-import { TouchableOpacity, View } from "react-native";
-
-
+import { Text, TouchableOpacity, View } from "react-native";
 
 function Square({ value, onSquareClick }) {
   return (
-    <TouchableOpacity style={{width:50,height:50, backgroundColor: "cyan", borderColor:"black"}} className="square" onPress={onSquareClick}>
-      {value}
+    <TouchableOpacity style={{ width: 100, height: 100, fontSize: 30, backgroundColor: "cyan", borderColor: "black", borderWidth: 2, }} className="square" onPress={onSquareClick}>
+      <Text style={{ fontSize: 70, textAlign: "center" }}>
+        {value}
+      </Text>
     </TouchableOpacity>
   );
 }
@@ -34,32 +34,33 @@ function Board({ xIsNext, squares, onPlay }) {
   } else {
     status = 'Next player: ' + (xIsNext ? 'X' : 'O');
   }
-  
+
 
   return (
     <>
-      <div className="status" >{status}</div>
-      <div className="board-row">
+      <View style={{marginTop: 150, alignItems: "center" }}>
+        <View>
+          <Text>
+            {status}
+          </Text>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
+          <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
+          <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
+          <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
+          <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
+          <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
+          <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
+        </View>
         
-        <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-        <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
-        <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
-        
-      </div>
-      <div className="board-row">
-        
-        <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
-        <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
-        <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
-        
-      </div>
-      <div className="board-row">
-       
-        <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
-        <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
-        <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
-        
-      </div>
+      </View>
     </>
   );
 }
@@ -86,25 +87,28 @@ export default function Game() {
     let description;
     if (move > 0) {
       description = 'Go to move #' + move;
+       return (
+      <View>
+        <TouchableOpacity onPress={() => jumpTo(move)} style={{borderWidth:2 ,borderColor:"lightsteelblue",backgroundColor:"mediumspringgreen"}}>{description}</TouchableOpacity>
+      </View>
+      );
     } else {
       description = 'Go to game start';
+      return(
+        <View>
+        <TouchableOpacity onPress={() => jumpTo(move)} style={{borderWidth:2 , borderColor:"lightsteelblue",backgroundColor:"coral"}}>{description}</TouchableOpacity>
+      </View>
+      );
     }
-    return (
-      <li key={move}>
-        <button onClick={() => jumpTo(move)}>{description}</button>
-      </li>
-    );
+    
   });
 
   return (
-    <div className="game">
-      <div className="game-board">
+    <View style={{alignItems:"center"}}>
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
-      </div>
-      <div className="game-info">
+      
         <ol>{moves}</ol>
-      </div>
-    </div>
+     </View>
   );
 }
 
