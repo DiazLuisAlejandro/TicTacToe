@@ -13,7 +13,7 @@ function Square({ value, onSquareClick }) {
   );
 }
 
-function Board({ xIsNext, squares, onPlay }) {
+function Board({ xIsNext, squares, onPlay, victoriasX,victoriasY}) {
   function handleClick(i) {
     if (calculateWinner(squares) || squares[i]) {
       return;
@@ -27,21 +27,29 @@ function Board({ xIsNext, squares, onPlay }) {
     onPlay(nextSquares);
   }
 
+
+  
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
     status = 'Winner: ' + winner;
+    if(xIsNext=='O'){
+      victoriasX=victoriasX+1;
+    }else{
+      victoriasY=victoriasY+1
+    }
+
   } else {
     status = 'Next player: ' + (xIsNext ? 'X' : 'O');
   }
-
-
+  
+  
   return (
     <>
-      <View style={{marginTop: 150, alignItems: "center" }}>
+      <View style={{ marginTop: 150, alignItems: "center" }}>
         <View>
           <Text>
-            {status}
+            {status} 
           </Text>
         </View>
         <View style={{ flexDirection: "row" }}>
@@ -72,6 +80,8 @@ export default function Game() {
   const [currentMove, setCurrentMove] = useState(0);
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
+  var victoriasX=0;
+  var victoriasY=0;
 
   function handlePlay(nextSquares) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
@@ -86,29 +96,28 @@ export default function Game() {
   const moves = history.map((squares, move) => {
     let description;
     if (move > 0) {
-      description = 'Go to move #' + move;
-       return (
-      <View>
-        <TouchableOpacity onPress={() => jumpTo(move)} style={{borderWidth:2 ,borderColor:"lightsteelblue",backgroundColor:"mediumspringgreen"}}>{description}</TouchableOpacity>
-      </View>
-      );
+     
     } else {
-      description = 'Go to game start';
-      return(
+      description = 'Restart game';
+      return (
         <View>
-        <TouchableOpacity onPress={() => jumpTo(move)} style={{borderWidth:2 , borderColor:"lightsteelblue",backgroundColor:"coral"}}>{description}</TouchableOpacity>
-      </View>
+          
+          <TouchableOpacity onPress={() => jumpTo(move)} style={{ borderWidth: 2, borderColor: "lightsteelblue", backgroundColor: "coral" }}>{description}</TouchableOpacity>
+          <Text>
+            Victorias X:{victoriasX} Victorias O:{victoriasY}
+          </Text>
+        </View>
       );
     }
-    
+
   });
 
   return (
-    <View style={{alignItems:"center"}}>
-        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
-      
-        <ol>{moves}</ol>
-     </View>
+    <View style={{ alignItems: "center" }}>
+      <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} victoriasX={victoriasX} victoriasY={victoriasY} />
+
+      <ol>{moves}</ol>
+    </View>
   );
 }
 
